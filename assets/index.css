@@ -1,0 +1,17 @@
+.training {
+    text-align: center;
+
+    .flashcard {
+        padding: 1em;
+        max-width: 800px;
+        margin: auto;
+
+        .card-text {
+            padding: 1em;
+        }
+    }
+
+    .controls {
+        padding: 1em;
+    }
+}

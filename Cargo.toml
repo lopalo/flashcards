@@ -1,0 +1,11 @@
+[package]
+name = "flashcards"
+version = "0.1.0"
+edition = "2021"
+rust-version = "1.78"
+
+[dependencies]
+wasm-bindgen = "0.2.92"
+web-sys = "0.3.69"
+yew = { version = "0.21.0", features = ["csr"] }
+yew-autoprops = "0.4.1"
