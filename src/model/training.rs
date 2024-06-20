@@ -1,8 +1,10 @@
 use super::flashcard::{Flashcard, FlashcardSide, Language};
-use std::rc::Rc;
+use std::{collections::VecDeque, rc::Rc};
 
-pub fn test_flashcards() -> Vec<Rc<Flashcard>> {
-    vec![
+pub type LearningSet = VecDeque<Rc<Flashcard>>;
+
+pub fn test_flashcards() -> LearningSet {
+    [
         Flashcard {
             id: "foo".into(),
             front_side: FlashcardSide {
@@ -27,5 +29,5 @@ pub fn test_flashcards() -> Vec<Rc<Flashcard>> {
             },
         }
         .into(),
-    ]
+    ].into()
 }

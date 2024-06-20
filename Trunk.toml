@@ -3,3 +3,21 @@ target = "assets/index.html"
 
 [watch]
 watch = ["assets", "src"]
+ignore = ["assets/dependencies"]
+
+
+[[hooks]]
+stage = "pre_build"
+command = "mkdir"
+command_arguments = ["-p","assets/dependencies"]
+
+[[hooks]]
+stage = "pre_build"
+command = "wget"
+command_arguments = [
+    "--no-clobber",
+    "--directory-prefix", "assets/dependencies",
+    "https://unpkg.com/material-components-web@14.0.0/dist/material-components-web.min.css",
+    "https://unpkg.com/material-components-web@14.0.0/dist/material-components-web.min.js"
+]
+

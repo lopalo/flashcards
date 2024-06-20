@@ -1,10 +1,15 @@
+
+body {
+    background-color: #f7f7f7;
+    margin: 0;
+}
+
 .training {
     text-align: center;
 
     .flashcard {
         padding: 1em;
-        max-width: 800px;
-        margin: auto;
+        margin: 1em;
 
         .card-text {
             padding: 1em;
@@ -12,6 +17,5 @@
     }
 
     .controls {
-        padding: 1em;
     }
 }
