@@ -17,5 +17,21 @@ body {
     }
 
     .controls {
+        button {
+            margin-right: 1em;
+        }
+    }
+}
+
+
+.learning-set {
+
+    .controls {
+        margin: 1em;
+
+        text-align: right;
+        button {
+            margin-left: 1em;
+        }
     }
 }

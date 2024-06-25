@@ -2,8 +2,8 @@ mod components;
 mod model;
 mod routes;
 
-use components::root::Root;
+use components::app::App;
 
 fn main() {
-    yew::Renderer::<Root>::new().render();
+    yew::Renderer::<App>::new().render();
 }

@@ -1,18 +1,19 @@
 use super::{
     common::{page::Page, Trigger},
+    context::LearningSetCtx,
     learning_set::LearningSet,
     navigation::NavigationDrawer,
     not_found::NotFound,
     settings::Settings,
     training::Training,
 };
-use crate::routes::Route;
+use crate::{model, routes::Route};
 use std::rc::Rc;
 use yew::prelude::*;
 use yew_router::prelude::*;
 
-#[function_component(Root)]
-pub fn root() -> Html {
+#[function_component(App)]
+pub fn app() -> Html {
     let show_navigation = use_reducer(Trigger::default);
     let route_switch = {
         let dispatcher = show_navigation.dispatcher();
@@ -26,11 +27,15 @@ pub fn root() -> Html {
         [Route::Training, Route::LearningSet, Route::Settings]
     });
 
+    let learning_set = use_reducer(model::LearningSet::restore_from_local_storage);
+
     html! {
       <div>
         <BrowserRouter>
+        <ContextProvider<LearningSetCtx> context={learning_set}>
           <NavigationDrawer open={*show_navigation} routes={navigation_routes} />
           <Switch<Route> render={route_switch} />
+        </ContextProvider<LearningSetCtx>>
         </BrowserRouter>
       </div>
     }

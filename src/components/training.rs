@@ -1,8 +1,9 @@
-use super::common::button::{FloatingActionButton, Button};
+use super::{
+    common::button::{Button, FloatingActionButton},
+    context::LearningSetCtx,
+};
 use crate::model::{
-    self,
-    flashcard::{Flashcard, FlashcardSide},
-    training::LearningSet,
+    flashcard::FlashcardSide, learning_set, Flashcard, LearningSetAction,
 };
 use std::rc::Rc;
 use yew::prelude::*;
@@ -66,45 +67,28 @@ pub fn current_card(card: Rc<Flashcard>) -> Html {
     }
 }
 
-#[derive(Default, Clone)]
-struct TrainingState {
-    learning_set: LearningSet,
-}
-
-impl TrainingState {
-    fn new(learning_set: LearningSet) -> Self {
-        Self { learning_set }
-    }
-}
-
-enum TraningAction {
-    Next,
-}
-
-impl Reducible for TrainingState {
-    type Action = TraningAction;
-
-    fn reduce(mut self: Rc<Self>, action: Self::Action) -> Rc<Self> {
-        use TraningAction::*;
-        let this = Rc::make_mut(&mut self);
-
-        match action {
-            Next => this.learning_set.rotate_left(1),
-        };
-        self
-    }
-}
-
 #[function_component(Training)]
 pub fn training() -> Html {
-    let state =
-        use_reducer(|| TrainingState::new(model::training::test_flashcards()));
+    let learning_set: LearningSetCtx = use_context().unwrap();
 
-    let move_next = {
-        let dispatcher = state.dispatcher();
-        move |_| dispatcher.dispatch(TraningAction::Next)
+    let go_back = {
+        let dispatcher = learning_set.dispatcher();
+        move |_| {
+            dispatcher.dispatch(LearningSetAction::RotateQueue(
+                learning_set::Direction::Right,
+            ))
+        }
     };
-    let Some(card) = state.learning_set.front().cloned() else {
+
+    let go_next = {
+        let dispatcher = learning_set.dispatcher();
+        move |_| {
+            dispatcher.dispatch(LearningSetAction::RotateQueue(
+                learning_set::Direction::Left,
+            ))
+        }
+    };
+    let Some(card) = learning_set.queue.front().cloned() else {
         return "No cards".into();
     };
 
@@ -112,7 +96,14 @@ pub fn training() -> Html {
       <div class="training">
         <CurrentCard {card} />
         <div class="controls">
-          <Button onclick={move_next}>
+          <Button onclick={go_back}>
+            {"Back"}
+          </Button>
+          //TODO: move a card N items forward
+          <Button onclick={|_| {}}>
+            {"Repeat"}
+          </Button>
+          <Button onclick={go_next}>
             {"Next"}
           </Button>
         </div>

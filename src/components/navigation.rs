@@ -9,11 +9,10 @@ use yew_router::prelude::*;
 #[function_component(NavigationDrawer)]
 pub fn navigation_drawer(open: Trigger, routes: Rc<[Route]>) -> Html {
     let (node_ref, comp_ref) = common::use_mdc_init(common::mdc_drawer);
-    use_effect_with(open, move |open| {
-        if *open == Trigger::default() {
-            return;
+    common::use_trigger(open, move || {
+        if let Some(c) = comp_ref.borrow().as_deref() {
+            c.set_open(true)
         }
-        comp_ref.borrow().as_deref().map(|c| c.set_open(true));
     });
 
     let current_route = use_route();

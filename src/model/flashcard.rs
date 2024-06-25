@@ -1,18 +1,19 @@
-#[derive(PartialEq)]
+use serde::{Deserialize, Serialize};
+
+#[derive(PartialEq, Serialize, Deserialize)]
 pub enum Language {
-    Engish,
+    English,
     Ukranian,
-    #[allow(unused)]
     Polish,
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Serialize, Deserialize)]
 pub struct FlashcardSide {
     pub text: String,
     pub language: Language,
 }
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Serialize, Deserialize)]
 pub struct Flashcard {
     pub id: String,
     pub front_side: FlashcardSide,

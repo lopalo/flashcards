@@ -1,4 +1,8 @@
+#![allow(clippy::empty_docs)]
+
 pub mod button;
+pub mod dialog;
+pub mod file;
 pub mod page;
 
 use std::{cell::RefCell, rc::Rc};
@@ -29,6 +33,15 @@ extern "C" {
 
     #[wasm_bindgen(method, setter = open)]
     pub fn set_open(this: &MdcDrawer, val: bool);
+
+    #[wasm_bindgen(extends = MdcComponent)]
+    pub type MdcDialog;
+
+    #[wasm_bindgen(js_namespace = ["mdc", "dialog", "MDCDialog"], js_name = attachTo)]
+    pub fn mdc_dialog(element: HtmlElement) -> MdcDialog;
+
+    #[wasm_bindgen(method)]
+    pub fn open(this: &MdcDialog);
 }
 
 #[hook]
@@ -45,9 +58,11 @@ where
         let component_ref = component_ref.clone();
         move |node_ref| {
             let component = node_ref.cast().map(constructor).map(Rc::new);
-            *component_ref.borrow_mut() = component.as_ref().map(Rc::clone);
+            component_ref.borrow_mut().clone_from(&component);
             move || {
-                component.map(|c| c.as_ref().as_ref().destroy());
+                if let Some(c) = component {
+                    c.as_ref().as_ref().destroy()
+                }
             }
         }
     });
@@ -72,4 +87,17 @@ impl Reducible for Trigger {
     fn reduce(self: Rc<Self>, _action: Self::Action) -> Rc<Self> {
         self.incr().into()
     }
+}
+
+#[hook]
+pub fn use_trigger<F>(trigger: Trigger, f: F)
+where
+    F: FnOnce() + 'static,
+{
+    use_effect_with(trigger, move |trigger| {
+        if *trigger == Trigger::default() {
+            return;
+        }
+        f()
+    });
 }
