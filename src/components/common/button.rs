@@ -9,7 +9,7 @@ pub enum ButtonVariant {
 }
 
 impl ButtonVariant {
-    fn css_class(&self) -> &'static str {
+    pub fn css_class(&self) -> &'static str {
         match self {
             Self::Text => "",
             Self::Raised => "mdc-button--raised",
@@ -52,15 +52,21 @@ pub fn button(props: &ButtonProps) -> Html {
 pub struct FloatingActionButtonProps {
     #[prop_or_default]
     pub icon_name: AttrValue,
+    #[prop_or_default]
+    pub mini: bool,
     pub onclick: Callback<MouseEvent>,
 }
 
 #[function_component(FloatingActionButton)]
 pub fn floating_action_button(props: &FloatingActionButtonProps) -> Html {
-    let FloatingActionButtonProps { icon_name, onclick } = props;
+    let FloatingActionButtonProps { icon_name, mini, onclick } = props;
     let node_ref = super::use_mdc_init(super::mdc_ripple).0;
     html! {
-      <button class="mdc-fab" ref={node_ref} {onclick} aria-label="Fooo">
+      <button
+        class={classes!("mdc-fab", mini.then_some("mdc-fab--mini"))}
+        ref={node_ref}
+        {onclick}
+      >
         <div class="mdc-fab__ripple"></div>
         <span class="mdc-fab__icon material-icons">{icon_name}</span>
       </button>

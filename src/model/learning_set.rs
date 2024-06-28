@@ -1,5 +1,5 @@
 use super::flashcard::Flashcard;
-use gloo::storage::{LocalStorage, Storage};
+use crate::local_storage::LocalStorageRecord;
 use serde::{Deserialize, Serialize};
 use std::{collections::VecDeque, rc::Rc};
 use yew::prelude::*;
@@ -17,6 +17,7 @@ pub enum Direction {
 pub enum LearningSetAction {
     Replace(LearningSet),
     RotateQueue(Direction),
+    MoveHeadItemForward { positions: usize },
 }
 
 impl Reducible for LearningSet {
@@ -30,20 +31,19 @@ impl Reducible for LearningSet {
             Replace(other) => *this = other,
             RotateQueue(Direction::Left) => this.queue.rotate_left(1),
             RotateQueue(Direction::Right) => this.queue.rotate_right(1),
+            MoveHeadItemForward { positions } => {
+                if let Some(head) = this.queue.pop_front() {
+                    let pos = positions.min(this.queue.len());
+                    this.queue.insert(pos, head)
+                };
+            }
         };
+
         self.save_in_local_storage();
         self
     }
 }
 
-impl LearningSet {
-    const KEY: &'static str = "flashcards:learning-set";
-
-    fn save_in_local_storage(&self) {
-        LocalStorage::set(Self::KEY, self).unwrap();
-    }
-
-    pub fn restore_from_local_storage() -> Self {
-        LocalStorage::get(Self::KEY).unwrap_or_default()
-    }
+impl LocalStorageRecord for LearningSet {
+    const KEY: &'static str = "learning-set";
 }

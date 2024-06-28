@@ -29,16 +29,19 @@ pub fn export_json<T>(file_name: &str, data: T)
 where
     T: Serialize,
 {
-    let blob = Blob::new(&serde_json::to_string_pretty(&data).unwrap()[..]);
+    let blob = Blob::new(serde_json::to_string_pretty(&data).unwrap().as_str());
     let url = ObjectUrl::from(blob);
-    let document = web_sys::window().unwrap().document().unwrap();
-    let anchor: HtmlAnchorElement =
-        document.create_element("a").unwrap().dyn_into().unwrap();
+    let anchor: HtmlAnchorElement = gloo::utils::document()
+        .create_element("a")
+        .unwrap()
+        .dyn_into()
+        .unwrap();
     anchor.set_download(file_name);
     anchor.set_href(&url);
-    document.body().unwrap().append_child(&anchor).unwrap();
+    let body = gloo::utils::body();
+    body.append_child(&anchor).unwrap();
     anchor.click();
-    document.body().unwrap().remove_child(&anchor).unwrap();
+    body.remove_child(&anchor).unwrap();
 }
 
 #[autoprops]

@@ -1,6 +1,8 @@
 use serde::{Deserialize, Serialize};
 
-#[derive(PartialEq, Serialize, Deserialize)]
+#[derive(
+    Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize,
+)]
 pub enum Language {
     English,
     Ukranian,
@@ -11,6 +13,12 @@ pub enum Language {
 pub struct FlashcardSide {
     pub text: String,
     pub language: Language,
+}
+
+impl FlashcardSide {
+    pub fn words(&self) -> Vec<&str> {
+        self.text.as_str().split_whitespace().collect()
+    }
 }
 
 #[derive(PartialEq, Serialize, Deserialize)]
