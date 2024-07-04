@@ -104,6 +104,7 @@ name = "flashcards"
 version = "0.1.0"
 dependencies = [
  "gloo 0.11.0",
+ "implicit-clone",
  "serde",
  "serde_json",
  "wasm-bindgen",

@@ -262,8 +262,8 @@ pub fn current_card(card: Rc<Flashcard>) -> Html {
           {for words}
         </div>
         <div class="controls">
-          <FloatingActionButton icon_name="autorenew" onclick={flip} />
-          <FloatingActionButton icon_name="hearing" onclick={speak_all} />
+          <FloatingActionButton icon_name="autorenew" on_click={flip} />
+          <FloatingActionButton icon_name="hearing" on_click={speak_all} />
         </div>
       </div>
     }
@@ -296,7 +296,7 @@ pub fn training() -> Html {
         let dispatcher = learning_set.dispatcher();
         move |_| {
             dispatcher.dispatch(LearningSetAction::MoveHeadItemForward {
-                positions: settings.repeat_card_after_n_cards,
+                positions: settings.repeat_card_distance,
             })
         }
     };
@@ -309,13 +309,13 @@ pub fn training() -> Html {
       <div class="training">
         <CurrentCard {card} />
         <div class="controls">
-          <Button onclick={go_back}>
+          <Button on_click={go_back}>
             {"Back"}
           </Button>
-          <Button onclick={repeat}>
+          <Button on_click={repeat}>
             {"Repeat"}
           </Button>
-          <Button onclick={go_next}>
+          <Button on_click={go_next}>
             {"Next"}
           </Button>
         </div>

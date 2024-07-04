@@ -1,4 +1,5 @@
 use yew_router::prelude::*;
+use implicit_clone::ImplicitClone;
 
 #[derive(Clone, PartialEq, Routable)]
 pub enum Route {
@@ -36,4 +37,4 @@ impl Route {
     }
 }
 
-impl yew::html::ImplicitClone for Route {}
+impl ImplicitClone for Route {}

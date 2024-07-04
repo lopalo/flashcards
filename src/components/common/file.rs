@@ -71,7 +71,6 @@ where
     html! {
       <Dialog {open} {title} {on_accept}>
         <input
-          id="file-upload"
           type="file"
           accept="application/json"
           ref={input_ref}

@@ -41,3 +41,15 @@ body {
         }
     }
 }
+
+
+.settings {
+    .mdc-text-field-helper-line {
+        display: block
+    }
+
+    .voice .mdc-select__anchor {
+        width: 350px;
+    }
+}
+

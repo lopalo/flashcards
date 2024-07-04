@@ -24,7 +24,7 @@ pub fn dialog(
             <h2 class="mdc-dialog__title">
               {title}
             </h2>
-            <div class="mdc-dialog__content" id="my-dialog-content">
+            <div class="mdc-dialog__content">
               {children.clone()}
             </div>
             <div class="mdc-dialog__actions">

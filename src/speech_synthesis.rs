@@ -8,7 +8,7 @@ fn speech_synthesis() -> SpeechSynthesis {
     gloo::utils::window().speech_synthesis().unwrap()
 }
 
-fn get_voices() -> Vec<SpeechSynthesisVoice> {
+pub fn get_voices() -> Vec<SpeechSynthesisVoice> {
     let mut voices: Vec<SpeechSynthesisVoice> = speech_synthesis()
         .get_voices()
         .iter()
@@ -43,4 +43,21 @@ where
 
 pub fn deactivate() {
     speech_synthesis().cancel()
+}
+
+#[derive(Clone)]
+pub struct OnVoicesChangedGuard {
+    _callback: Rc<Closure<dyn Fn()>>,
+}
+
+pub fn set_on_voices_changed<F>(callback: F) -> OnVoicesChangedGuard
+where
+    F: Fn() + 'static,
+{
+    let callback = Closure::new(callback);
+    speech_synthesis()
+        .set_onvoiceschanged(Some(callback.as_ref().unchecked_ref()));
+    OnVoicesChangedGuard {
+        _callback: Rc::new(callback),
+    }
 }

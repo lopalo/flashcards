@@ -27,7 +27,7 @@ pub fn navigation_drawer(open: Trigger, routes: Rc<[Route]>) -> Html {
         html! {
           <Link<Route> to={route} {classes}>
             <span class="mdc-deprecated-list-item__ripple"></span>
-            <i class="material-icons mdc-deprecated-list-item__graphic" aria-hidden="true">
+            <i class="material-icons mdc-deprecated-list-item__graphic">
               {icon}
             </i>
             <span class="mdc-deprecated-list-item__text">

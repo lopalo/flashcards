@@ -2,9 +2,12 @@
 
 pub mod button;
 pub mod dialog;
+pub mod dropdown;
 pub mod file;
+pub mod form;
 pub mod page;
 
+use implicit_clone::ImplicitClone;
 use std::{cell::RefCell, rc::Rc};
 use wasm_bindgen::prelude::*;
 use web_sys::HtmlElement;
@@ -42,6 +45,22 @@ extern "C" {
 
     #[wasm_bindgen(method)]
     pub fn open(this: &MdcDialog);
+
+    #[wasm_bindgen(js_namespace = ["mdc", "textField", "MDCTextField"], js_name = attachTo)]
+    fn mdc_text_field(element: HtmlElement) -> MdcComponent;
+
+    #[wasm_bindgen(extends = MdcComponent)]
+    pub type MdcSelect;
+
+    #[wasm_bindgen(js_namespace = ["mdc", "select", "MDCSelect"], js_name = attachTo)]
+    fn mdc_select(element: HtmlElement) -> MdcSelect;
+
+    #[wasm_bindgen(method)]
+    pub fn initialize(this: &MdcSelect);
+
+    #[wasm_bindgen(method, setter = value)]
+    pub fn set_value(this: &MdcSelect, value: &str);
+
 }
 
 #[hook]
@@ -79,7 +98,7 @@ impl Trigger {
     }
 }
 
-impl html::ImplicitClone for Trigger {}
+impl ImplicitClone for Trigger {}
 
 impl Reducible for Trigger {
     type Action = ();

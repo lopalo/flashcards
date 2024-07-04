@@ -34,7 +34,7 @@ pub fn app() -> Html {
     html! {
       <div>
         <BrowserRouter>
-        <ContextProvider<SettingsCtx> context={SettingsCtx::from((*settings).clone())}>
+        <ContextProvider<SettingsCtx> context={settings}>
         <ContextProvider<LearningSetCtx> context={learning_set}>
           <NavigationDrawer open={*show_navigation} routes={navigation_routes} />
           <Switch<Route> render={route_switch} />

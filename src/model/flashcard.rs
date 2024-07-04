@@ -1,13 +1,31 @@
+use implicit_clone::ImplicitClone;
 use serde::{Deserialize, Serialize};
 
 #[derive(
-    Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize,
+    Clone, Copy, PartialEq, Eq, PartialOrd, Ord, Serialize, Deserialize, Debug,
 )]
 pub enum Language {
     English,
-    Ukranian,
+    German,
     Polish,
+    Slovakian,
+    Ukranian,
 }
+
+impl std::fmt::Display for Language {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{self:?}")
+    }
+}
+
+impl Language {
+    pub fn all_languages() -> &'static [Self] {
+        use Language::*;
+        &[English, German, Polish, Slovakian, Ukranian]
+    }
+}
+
+impl ImplicitClone for Language {}
 
 #[derive(PartialEq, Serialize, Deserialize)]
 pub struct FlashcardSide {

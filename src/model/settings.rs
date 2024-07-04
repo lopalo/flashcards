@@ -4,10 +4,14 @@ use serde::{Deserialize, Serialize};
 use std::{collections::BTreeMap, rc::Rc};
 use yew::prelude::*;
 
+pub static DEFAULT_VOICE: &str = "Google UK English Male";
+
 #[derive(Clone, PartialEq, Serialize, Deserialize)]
 pub struct Settings {
-    pub repeat_card_after_n_cards: usize,
+    pub repeat_card_distance: usize,
     pub voices: BTreeMap<Language, String>,
+    pub default_card_front_side_language: Language,
+    pub default_card_back_side_language: Language,
 }
 
 impl Settings {
@@ -15,23 +19,51 @@ impl Settings {
         self.voices
             .get(&lang)
             .map(AsRef::as_ref)
-            .unwrap_or("Google UK English Male")
+            .unwrap_or(DEFAULT_VOICE)
     }
 }
 
 impl Default for Settings {
     fn default() -> Self {
         Self {
-            repeat_card_after_n_cards: 2,
+            repeat_card_distance: 10,
             voices: Default::default(),
+            default_card_front_side_language: Language::Ukranian,
+            default_card_back_side_language: Language::English,
         }
     }
 }
 
-impl Reducible for Settings {
-    type Action = ();
+pub enum SettingsAction {
+    SetRepeatCardDistance(usize),
+    SetVoice { language: Language, voice: String },
+    SetCardFrontSideLanguage(Language),
+    SetCardBackSideLanguage(Language),
+}
 
-    fn reduce(self: Rc<Self>, action: Self::Action) -> Rc<Self> {
+impl Reducible for Settings {
+    type Action = SettingsAction;
+
+    fn reduce(mut self: Rc<Self>, action: Self::Action) -> Rc<Self> {
+        use SettingsAction::*;
+        let this = Rc::make_mut(&mut self);
+
+        match action {
+            SetRepeatCardDistance(distance) => {
+                this.repeat_card_distance = distance
+            }
+            SetVoice { language, voice } => {
+                this.voices.insert(language, voice);
+            }
+            SetCardFrontSideLanguage(language) => {
+                this.default_card_front_side_language = language
+            }
+            SetCardBackSideLanguage(language) => {
+                this.default_card_back_side_language = language
+            }
+        }
+
+        self.save_in_local_storage();
         self
     }
 }

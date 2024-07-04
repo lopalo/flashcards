@@ -46,10 +46,10 @@ pub fn learning_set() -> Html {
       <div class="learning-set">
         <ImportDialog<model::LearningSet> open={*show_import_dialog} {on_import}/>
         <div class="controls">
-          <Button onclick={on_import_click}>
+          <Button on_click={on_import_click}>
             {"Import"}
           </Button>
-          <Button onclick={on_export_click}>
+          <Button on_click={on_export_click}>
             {"Export"}
           </Button>
         </div>
