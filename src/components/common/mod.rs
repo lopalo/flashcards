@@ -61,6 +61,17 @@ extern "C" {
     #[wasm_bindgen(method, setter = value)]
     pub fn set_value(this: &MdcSelect, value: &str);
 
+    #[wasm_bindgen(extends = MdcComponent)]
+    pub type MdcSnackbar;
+
+    #[wasm_bindgen(js_namespace = ["mdc", "snackbar", "MDCSnackbar"], js_name = attachTo)]
+    pub fn mdc_snackbar(element: HtmlElement) -> MdcSnackbar;
+
+    #[wasm_bindgen(method)]
+    pub fn open(this: &MdcSnackbar);
+
+    #[wasm_bindgen(method)]
+    pub fn close(this: &MdcSnackbar);
 }
 
 #[hook]

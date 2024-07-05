@@ -1,10 +1,11 @@
 use super::{
     common::{page::Page, Trigger},
-    context::{LearningSetCtx, SettingsCtx},
+    context::{LearningSetCtx, SettingsCtx, DisplayErrorCtx},
     learning_set::LearningSet,
     navigation::NavigationDrawer,
     not_found::NotFound,
     settings::Settings,
+    snackbar::{Snackbar, SnackbarMessage},
     training::Training,
 };
 use crate::{local_storage::LocalStorageRecord, model, routes::Route};
@@ -27,6 +28,8 @@ pub fn app() -> Html {
         [Route::Training, Route::LearningSet, Route::Settings]
     });
 
+    let snackbar_message = use_reducer(SnackbarMessage::default);
+
     let settings = use_reducer(model::Settings::restore_from_local_storage);
     let learning_set =
         use_reducer(model::LearningSet::restore_from_local_storage);
@@ -34,12 +37,15 @@ pub fn app() -> Html {
     html! {
       <div>
         <BrowserRouter>
+        <ContextProvider<DisplayErrorCtx> context={snackbar_message.dispatcher()}>
         <ContextProvider<SettingsCtx> context={settings}>
         <ContextProvider<LearningSetCtx> context={learning_set}>
           <NavigationDrawer open={*show_navigation} routes={navigation_routes} />
           <Switch<Route> render={route_switch} />
+          <Snackbar message={(*snackbar_message).clone()} />
         </ContextProvider<LearningSetCtx>>
         </ContextProvider<SettingsCtx>>
+        </ContextProvider<DisplayErrorCtx>>
         </BrowserRouter>
       </div>
     }

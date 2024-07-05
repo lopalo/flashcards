@@ -6,3 +6,4 @@ mod not_found;
 mod settings;
 mod training;
 mod context;
+mod snackbar;
