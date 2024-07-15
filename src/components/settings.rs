@@ -28,7 +28,7 @@ pub fn settings() -> Html {
     let on_repeat_card_distance_change = {
         let dispatcher = settings.dispatcher();
         move |value: String| {
-            dispatcher.dispatch(SettingsAction::SetRepeatCardDistance(
+            dispatcher.dispatch(SettingsAction::RepeatCardDistance(
                 value.parse().unwrap_or(1),
             ))
         }
@@ -50,7 +50,7 @@ pub fn settings() -> Html {
         let dispatcher = settings.dispatcher();
         let language = *selected_voice_language;
         move |voice: AttrValue| {
-            dispatcher.dispatch(SettingsAction::SetVoice {
+            dispatcher.dispatch(SettingsAction::Voice {
                 language,
                 voice: voice.as_cow().into_owned(),
             })
@@ -61,7 +61,7 @@ pub fn settings() -> Html {
         let dispatcher = settings.dispatcher();
         move |language: Language| {
             dispatcher
-                .dispatch(SettingsAction::SetCardFrontSideLanguage(language))
+                .dispatch(SettingsAction::CardFrontSideLanguage(language))
         }
     };
 
@@ -69,7 +69,7 @@ pub fn settings() -> Html {
         let dispatcher = settings.dispatcher();
         move |language: Language| {
             dispatcher
-                .dispatch(SettingsAction::SetCardBackSideLanguage(language))
+                .dispatch(SettingsAction::CardBackSideLanguage(language))
         }
     };
 

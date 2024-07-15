@@ -26,7 +26,7 @@ impl ImplicitClone for TextFieldVariant {}
 pub fn text_field(
     #[prop_or_default] variant: TextFieldVariant,
     label: AttrValue,
-    helper_text: Option<AttrValue>,
+    #[prop_or_default] helper_text: Option<AttrValue>,
     value: AttrValue,
     on_change: Callback<String>,
 ) -> Html {
@@ -54,6 +54,54 @@ pub fn text_field(
             value={value}
             {oninput}
           />
+        </label>
+        if let Some(helper_text) = helper_text {
+          <div class="mdc-text-field-helper-line">
+            <div class="mdc-text-field-helper-text">{helper_text}</div>
+          </div>
+        }
+      </div>
+    }
+}
+
+
+#[autoprops]
+#[function_component(Textarea)]
+pub fn textarea(
+    label: AttrValue,
+    #[prop_or_default] helper_text: Option<AttrValue>,
+    #[prop_or(3)] rows: usize,
+    #[prop_or(40)] cols: usize,
+    value: AttrValue,
+    on_change: Callback<String>,
+) -> Html {
+    let node_ref = super::use_mdc_init(super::mdc_text_field).0;
+    let oninput = move |e: InputEvent| {
+        on_change.emit(e.target_unchecked_into::<HtmlInputElement>().value())
+    };
+
+    html! {
+      <div>
+        <label
+          class="mdc-text-field mdc-text-field--outlined mdc-text-field--textarea"
+          ref={node_ref}
+        >
+          <span class="mdc-notched-outline">
+            <span class="mdc-notched-outline__leading"></span>
+              <span class="mdc-notched-outline__notch">
+                <span class="mdc-floating-label">{label}</span>
+              </span>
+            <span class="mdc-notched-outline__trailing"></span>
+          </span>
+          <span class="mdc-text-field__resizer">
+            <textarea
+              class="mdc-text-field__input"
+              rows={rows.to_string()}
+              cols={cols.to_string()}
+              value={value}
+              {oninput}
+            />
+          </span>
         </label>
         if let Some(helper_text) = helper_text {
           <div class="mdc-text-field-helper-line">

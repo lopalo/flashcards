@@ -35,10 +35,10 @@ impl Default for Settings {
 }
 
 pub enum SettingsAction {
-    SetRepeatCardDistance(usize),
-    SetVoice { language: Language, voice: String },
-    SetCardFrontSideLanguage(Language),
-    SetCardBackSideLanguage(Language),
+    RepeatCardDistance(usize),
+    Voice { language: Language, voice: String },
+    CardFrontSideLanguage(Language),
+    CardBackSideLanguage(Language),
 }
 
 impl Reducible for Settings {
@@ -49,16 +49,16 @@ impl Reducible for Settings {
         let this = Rc::make_mut(&mut self);
 
         match action {
-            SetRepeatCardDistance(distance) => {
+            RepeatCardDistance(distance) => {
                 this.repeat_card_distance = distance
             }
-            SetVoice { language, voice } => {
+            Voice { language, voice } => {
                 this.voices.insert(language, voice);
             }
-            SetCardFrontSideLanguage(language) => {
+            CardFrontSideLanguage(language) => {
                 this.default_card_front_side_language = language
             }
-            SetCardBackSideLanguage(language) => {
+            CardBackSideLanguage(language) => {
                 this.default_card_back_side_language = language
             }
         }

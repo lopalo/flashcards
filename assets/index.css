@@ -40,6 +40,16 @@ body {
             margin-left: 1em;
         }
     }
+
+    .add-flashcard-button {
+        position: fixed;
+        bottom: 3vw;
+        right: 3vw;
+    }
+
+    .drag-handle {
+        cursor: move
+    }
 }
 
 

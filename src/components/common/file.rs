@@ -7,7 +7,7 @@ use yew::prelude::*;
 use yew_autoprops::autoprops;
 
 pub fn import_json<T, F, D>(
-    input: HtmlInputElement,
+    input: &HtmlInputElement,
     callback: F,
     display_error: D,
 ) -> Option<FileReader>
@@ -70,6 +70,15 @@ where
     let file_reader = use_mut_ref(|| None);
     let input_ref = use_node_ref();
 
+    super::use_trigger(open, {
+        let input_ref = input_ref.clone();
+        move || {
+            if let Some(file) = input_ref.cast::<HtmlInputElement>() {
+                file.set_value("");
+            };
+        }
+    });
+
     let on_accept = {
         let input_ref = input_ref.clone();
         move |_| {
@@ -79,7 +88,7 @@ where
             let on_import = on_import.clone();
             let display_error = display_error.clone();
             *file_reader.borrow_mut() = import_json(
-                file,
+                &file,
                 move |data| on_import.emit(data),
                 move |error| display_error.dispatch(error.into()),
             );

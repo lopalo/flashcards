@@ -150,7 +150,7 @@ fn activate_speech(
     card: &Flashcard,
     selected_words: &SelectedWords,
 ) {
-    let card_side = state.card_side.flashcard_side(&card);
+    let card_side = state.card_side.flashcard_side(card);
     let text = card_side.words()[selected_words.0].join(" ");
     let dispatcher = state.dispatcher();
     let speech_guard = speech_synthesis::activate(
@@ -295,7 +295,7 @@ pub fn training() -> Html {
     let repeat = {
         let dispatcher = learning_set.dispatcher();
         move |_| {
-            dispatcher.dispatch(LearningSetAction::MoveHeadItemForward {
+            dispatcher.dispatch(LearningSetAction::MoveHeadCardForward {
                 positions: settings.repeat_card_distance,
             })
         }

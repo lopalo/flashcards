@@ -18,12 +18,20 @@ pub fn dialog(
     });
 
     html! {
-      <div class="mdc-dialog" ref={node_ref}>
+      <div class="mdc-dialog mdc-dialog--fullscreen" ref={node_ref}>
         <div class="mdc-dialog__container">
           <div class="mdc-dialog__surface" role="alertdialog">
-            <h2 class="mdc-dialog__title">
-              {title}
-            </h2>
+            <div class="mdc-dialog__header">
+              <h2 class="mdc-dialog__title">
+                {title}
+              </h2>
+              <button
+                class="mdc-icon-button material-icons mdc-dialog__close"
+                data-mdc-dialog-action="close"
+              >
+                {"close"}
+              </button>
+            </div>
             <div class="mdc-dialog__content">
               {children.clone()}
             </div>
