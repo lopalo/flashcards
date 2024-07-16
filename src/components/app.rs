@@ -1,6 +1,6 @@
 use super::{
     common::{page::Page, Trigger},
-    context::{LearningSetCtx, SettingsCtx, DisplayErrorCtx},
+    context::{DisplayErrorCtx, LearningSetCtx, SettingsCtx},
     learning_set::LearningSet,
     navigation::NavigationDrawer,
     not_found::NotFound,

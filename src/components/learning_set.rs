@@ -111,10 +111,44 @@ fn flashcard_record(
         move |_| on_edit_card_click.emit(card.clone())
     };
 
+    let ondragstart = {
+        let card = card.clone();
+        move |event: DragEvent| {
+            let data_transfer = event.data_transfer().unwrap();
+            data_transfer.set_drop_effect("move");
+            let _ = data_transfer.set_data("flashcard-id", card.id.as_str());
+        }
+    };
+    let ondragenter = |event: DragEvent| event.prevent_default();
+    let ondragover = |event: DragEvent| event.prevent_default();
+    let ondrop = {
+        let learning_set = learning_set.clone();
+        let card = card.clone();
+        move |event: DragEvent| {
+            event.prevent_default();
+            if let Ok(source_flashcard_id) =
+                event.data_transfer().unwrap().get_data("flashcard-id")
+            {
+                learning_set.dispatch(LearningSetAction::MoveCardTo {
+                    source_flashcard_id,
+                    target_flashcard_id: card.id.clone(),
+                })
+            }
+        }
+    };
+
     html! {
       <>
         <li role="separator" class="mdc-deprecated-list-divider" />
-        <li key={card.id.as_str()} class="mdc-deprecated-list-item">
+        <li
+          key={card.id.as_str()}
+          class="mdc-deprecated-list-item"
+          draggable="true"
+          {ondragstart}
+          {ondragenter}
+          {ondragover}
+          {ondrop}
+        >
           <span class="mdc-deprecated-list-item__graphic material-icons drag-handle">
             {"drag_handle"}
           </span>
@@ -122,7 +156,7 @@ fn flashcard_record(
             <span class="mdc-deprecated-list-item__primary-text">{card.front_side.text.as_str()}</span>
             <span class="mdc-deprecated-list-item__secondary-text">{card.back_side.text.as_str()}</span>
           </span>
-          <span class="mdc-deprecated-list-item__meta">
+          <span class="mdc-deprecated-list-item__meta flashcard-controls">
             <button
               class="mdc-icon-button material-icons mdc-theme--error"
               onclick={on_delete_click}
@@ -278,7 +312,8 @@ fn edit_flashcard_form(open: Trigger, card: Rc<Flashcard>) -> Html {
     let card_id = &edited_card.id;
 
     html! {
-      <Dialog {open} title={format!("Edit flashcard ({card_id})")} {on_accept}>
+      <Dialog {open} title="Edit flashcard" {on_accept}>
+        <h5>{format!{"#{card_id}"}}</h5>
         <div class="mdc-layout-grid">
           <div class="mdc-layout-grid__inner">
             <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">

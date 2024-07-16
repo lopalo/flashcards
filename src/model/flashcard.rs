@@ -62,6 +62,16 @@ impl Flashcard {
             back_side: side,
         }
     }
+
+    pub fn sanitize_fields(&mut self) {
+        let mut text = String::new();
+
+        self.front_side.text.trim().clone_into(&mut text);
+        self.front_side.text.clone_from(&text);
+
+        self.back_side.text.trim().clone_into(&mut text);
+        self.back_side.text.clone_from(&text);
+    }
 }
 
 pub enum FlashcardAction {
@@ -82,11 +92,9 @@ impl Reducible for Flashcard {
 
         match action {
             ReplaceWithNew => *this = Self::new(),
-            ReplaceWith(flashcard) => {
-                *this = (*flashcard).clone()
-            }
-            SetFrontText(text) => this.front_side.text = text,
-            SetBackText(text) => this.back_side.text = text,
+            ReplaceWith(flashcard) => this.clone_from(&flashcard),
+            SetFrontText(text) => this.front_side.text.clone_from(&text),
+            SetBackText(text) => this.back_side.text.clone_from(&text),
             SetFrontLanguage(language) => this.front_side.language = language,
             SetBackLanguage(language) => this.back_side.language = language,
         };

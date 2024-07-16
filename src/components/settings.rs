@@ -60,16 +60,14 @@ pub fn settings() -> Html {
     let on_select_card_front_language = {
         let dispatcher = settings.dispatcher();
         move |language: Language| {
-            dispatcher
-                .dispatch(SettingsAction::CardFrontSideLanguage(language))
+            dispatcher.dispatch(SettingsAction::CardFrontSideLanguage(language))
         }
     };
 
     let on_select_card_back_language = {
         let dispatcher = settings.dispatcher();
         move |language: Language| {
-            dispatcher
-                .dispatch(SettingsAction::CardBackSideLanguage(language))
+            dispatcher.dispatch(SettingsAction::CardBackSideLanguage(language))
         }
     };
 

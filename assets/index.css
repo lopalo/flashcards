@@ -50,6 +50,10 @@ body {
     .drag-handle {
         cursor: move
     }
+
+    .flashcard-controls {
+        min-width: 8em;
+    }
 }
 
 

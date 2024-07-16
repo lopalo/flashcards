@@ -1,7 +1,9 @@
 use gloo::storage::{LocalStorage, Storage};
 use serde::{de::DeserializeOwned, Serialize};
 
-pub (crate) trait LocalStorageRecord: Default + Serialize + DeserializeOwned {
+pub(crate) trait LocalStorageRecord:
+    Default + Serialize + DeserializeOwned
+{
     const KEY: &'static str;
 
     fn key() -> String {

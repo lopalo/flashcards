@@ -23,10 +23,18 @@ pub enum Direction {
 pub enum LearningSetAction {
     Replace(LearningSet),
     RotateQueue(Direction),
-    MoveHeadCardForward { positions: usize },
+    MoveHeadCardForward {
+        positions: usize,
+    },
     AppendCard(Flashcard),
     ReplaceCard(Flashcard),
-    DeleteCard { flashcard_id: String },
+    DeleteCard {
+        flashcard_id: String,
+    },
+    MoveCardTo {
+        source_flashcard_id: String,
+        target_flashcard_id: String,
+    },
 }
 
 impl Reducible for LearningSet {
@@ -46,15 +54,31 @@ impl Reducible for LearningSet {
                     this.queue.insert(pos, head)
                 };
             }
-            AppendCard(flashcard) => this.queue.push_back(flashcard.into()),
-            ReplaceCard(flashcard) => {
+            AppendCard(mut flashcard) => {
+                flashcard.sanitize_fields();
+                this.queue.push_back(flashcard.into())
+            }
+            ReplaceCard(mut flashcard) => {
                 if let Some(idx) = this.flashcard_index(&flashcard.id) {
+                    flashcard.sanitize_fields();
                     this.queue[idx] = flashcard.into();
                 }
             }
             DeleteCard { flashcard_id } => {
                 if let Some(idx) = this.flashcard_index(&flashcard_id) {
                     this.queue.remove(idx);
+                }
+            }
+            MoveCardTo {
+                source_flashcard_id,
+                target_flashcard_id,
+            } => {
+                if let (Some(source_idx), Some(target_idx)) = (
+                    this.flashcard_index(&source_flashcard_id),
+                    this.flashcard_index(&target_flashcard_id),
+                ) {
+                    let card = this.queue.remove(source_idx).unwrap();
+                    this.queue.insert(target_idx, card)
                 }
             }
         };
