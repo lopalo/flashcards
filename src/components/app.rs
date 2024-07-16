@@ -36,7 +36,7 @@ pub fn app() -> Html {
 
     html! {
       <div>
-        <BrowserRouter>
+        <HashRouter>
         <ContextProvider<DisplayErrorCtx> context={snackbar_message.dispatcher()}>
         <ContextProvider<SettingsCtx> context={settings}>
         <ContextProvider<LearningSetCtx> context={learning_set}>
@@ -46,7 +46,7 @@ pub fn app() -> Html {
         </ContextProvider<LearningSetCtx>>
         </ContextProvider<SettingsCtx>>
         </ContextProvider<DisplayErrorCtx>>
-        </BrowserRouter>
+        </HashRouter>
       </div>
     }
 }
