@@ -72,6 +72,9 @@ extern "C" {
 
     #[wasm_bindgen(method)]
     pub fn close(this: &MdcSnackbar);
+
+    #[wasm_bindgen(js_namespace = ["mdc", "checkbox", "MDCCheckbox"], js_name = attachTo)]
+    fn mdc_checkbox(element: HtmlElement) -> MdcComponent;
 }
 
 #[hook]

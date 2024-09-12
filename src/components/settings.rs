@@ -1,7 +1,7 @@
 use super::{
     common::{
         dropdown::Dropdown,
-        form::{TextField, TextFieldVariant},
+        form::{Checkbox, TextField, TextFieldVariant},
     },
     context::SettingsCtx,
 };
@@ -71,6 +71,13 @@ pub fn settings() -> Html {
         }
     };
 
+    let on_always_speak_back_side_text_change = {
+        let dispatcher = settings.dispatcher();
+        move |value| {
+            dispatcher.dispatch(SettingsAction::AlwaysSpeakBackSideText(value))
+        }
+    };
+
     html! {
         <div class="mdc-layout-grid settings">
           <div class="mdc-layout-grid__inner">
@@ -118,6 +125,13 @@ pub fn settings() -> Html {
                 items={languages}
                 selected={settings.default_card_back_side_language}
                 on_select={on_select_card_back_language}
+              />
+            </div>
+            <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
+              <Checkbox
+                label="Always speak back side text"
+                checked={settings.always_speak_back_side_text}
+                on_change={on_always_speak_back_side_text_change}
               />
             </div>
           </div>

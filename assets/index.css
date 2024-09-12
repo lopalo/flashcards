@@ -1,3 +1,10 @@
+:root {
+  --mdc-theme-primary: #424242;
+
+  @media screen and (min-aspect-ratio: 2/1) {
+    font-size: 140%;
+  }
+}
 
 body {
     background-color: #f7f7f7;

@@ -17,7 +17,7 @@ use web_sys::Element;
 use yew::prelude::*;
 use yew_autoprops::autoprops;
 
-#[derive(Default, Clone, Copy)]
+#[derive(Default, Clone, Copy, PartialEq, Eq)]
 enum CardSide {
     #[default]
     Front,
@@ -40,7 +40,7 @@ impl CardSide {
     }
 }
 
-#[derive(Clone)]
+#[derive(Clone, PartialEq, Eq)]
 struct SelectedWords((Bound<usize>, Bound<usize>));
 
 impl SelectedWords {
@@ -51,6 +51,10 @@ impl SelectedWords {
 
     fn all() -> Self {
         Self((Bound::Included(0), Bound::Unbounded))
+    }
+
+    fn none() -> Self {
+        Self((Bound::Included(0), Bound::Excluded(0)))
     }
 
     fn update(&mut self, word_index: usize) {
@@ -150,16 +154,30 @@ fn activate_speech(
     card: &Flashcard,
     selected_words: &SelectedWords,
 ) {
-    let card_side = state.card_side.flashcard_side(card);
-    let text = card_side.words()[selected_words.0].join(" ");
+    let mut selected_words = selected_words.clone();
+    let text;
+    let language;
+    if selected_words == SelectedWords::all()
+        && state.card_side == CardSide::Front
+        && settings.always_speak_back_side_text
+    {
+        let card_side = &card.back_side;
+        text = card_side.words()[selected_words.0].join(" ");
+        language = card_side.language;
+        selected_words = SelectedWords::none();
+    } else {
+        let card_side = state.card_side.flashcard_side(card);
+        language = card_side.language;
+        text = card_side.words()[selected_words.0].join(" ");
+    }
     let dispatcher = state.dispatcher();
     let speech_guard = speech_synthesis::activate(
-        settings.get_voice(card_side.language),
+        settings.get_voice(language),
         &text,
         move || dispatcher.dispatch(CurrentCardAction::DeactivateSpeech),
     );
     state.dispatch(CurrentCardAction::ActivateSpeech(
-        selected_words.clone(),
+        selected_words,
         speech_guard,
     ));
 }

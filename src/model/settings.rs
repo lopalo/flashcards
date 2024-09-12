@@ -12,6 +12,7 @@ pub struct Settings {
     pub voices: BTreeMap<Language, String>,
     pub default_card_front_side_language: Language,
     pub default_card_back_side_language: Language,
+    pub always_speak_back_side_text: bool,
 }
 
 impl Settings {
@@ -30,6 +31,7 @@ impl Default for Settings {
             voices: Default::default(),
             default_card_front_side_language: Language::Ukranian,
             default_card_back_side_language: Language::English,
+            always_speak_back_side_text: true,
         }
     }
 }
@@ -39,6 +41,7 @@ pub enum SettingsAction {
     Voice { language: Language, voice: String },
     CardFrontSideLanguage(Language),
     CardBackSideLanguage(Language),
+    AlwaysSpeakBackSideText(bool),
 }
 
 impl Reducible for Settings {
@@ -60,6 +63,9 @@ impl Reducible for Settings {
             }
             CardBackSideLanguage(language) => {
                 this.default_card_back_side_language = language
+            }
+            AlwaysSpeakBackSideText(val) => {
+                this.always_speak_back_side_text = val
             }
         }
 
