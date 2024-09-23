@@ -129,6 +129,7 @@ pub fn settings() -> Html {
             </div>
             <div class="mdc-layout-grid__cell mdc-layout-grid__cell--span-12">
               <Checkbox
+                id="always-speak-back-side-text"
                 label="Always speak back side text"
                 checked={settings.always_speak_back_side_text}
                 on_change={on_always_speak_back_side_text_change}

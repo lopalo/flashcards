@@ -1,76 +1,99 @@
 :root {
   --mdc-theme-primary: #424242;
-
-  @media screen and (min-aspect-ratio: 2/1) {
-    font-size: 140%;
-  }
 }
 
 body {
-    background-color: #f7f7f7;
-    margin: 0;
+  background-color: #f7f7f7;
+  margin: 0;
 }
 
 .training {
-    text-align: center;
+  text-align: center;
 
-    .flashcard {
-        padding: 1em;
-        margin: 1em;
+  .flashcard {
+    padding: 1em;
+    margin: 1em;
 
-        .card-text {
-            padding: 1em;
+    .card-text {
+      padding: 1em;
 
-            button {
-                min-width: 0 !important;
-                padding: 0.3em !important;
-                touch-action: none;
-            }
-        }
+      button {
+        min-width: 0 !important;
+        padding: 0.3em !important;
+        touch-action: none;
+        text-transform: none;
+        font-size: 130%;
+      }
     }
+  }
 
-    .controls {
-        button {
-            margin-right: 1em;
-        }
+  .controls {
+    button {
+      margin-right: 1em;
     }
+  }
 }
-
 
 .learning-set {
+  .controls {
+    margin: 1em;
 
-    .controls {
-        margin: 1em;
-
-        text-align: right;
-        button {
-            margin-left: 1em;
-        }
+    text-align: right;
+    button {
+      margin-left: 1em;
     }
+  }
 
-    .add-flashcard-button {
-        position: fixed;
-        bottom: 3vw;
-        right: 3vw;
-    }
+  .add-flashcard-button {
+    position: fixed;
+    bottom: 3vw;
+    right: 3vw;
+  }
 
-    .drag-handle {
-        cursor: move
-    }
+  .drag-handle {
+    cursor: move;
+  }
 
-    .flashcard-controls {
-        min-width: 8em;
-    }
+  .flashcard-controls {
+    min-width: 8em;
+  }
 }
-
 
 .settings {
-    .mdc-text-field-helper-line {
-        display: block
-    }
+  .mdc-text-field-helper-line {
+    display: block;
+  }
 
-    .voice .mdc-select__anchor {
-        width: 350px;
-    }
+  .voice .mdc-select__anchor {
+    width: 350px;
+  }
 }
 
+@media screen and (min-aspect-ratio: 2/1) {
+  :root {
+    font-size: 150%;
+  }
+
+  .mdc-icon-button {
+    font-size: 36px;
+    height: 72px;
+    width: 72px;
+  }
+
+  .mdc-button:not(.card-text button) {
+    height: 2rem;
+  }
+
+  .mdc-fab {
+    height: 72px;
+    width: 72px;
+
+    .mdc-fab__icon {
+      font-size: 36px;
+    }
+  }
+
+  .mdc-top-app-bar--short {
+    min-width: 78px;
+  }
+}

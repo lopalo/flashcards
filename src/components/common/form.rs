@@ -114,6 +114,7 @@ pub fn textarea(
 #[autoprops]
 #[function_component(Checkbox)]
 pub fn checkbox(
+    #[prop_or_default] id: Option<AttrValue>,
     label: AttrValue,
     checked: bool,
     on_change: Callback<bool>,
@@ -127,6 +128,7 @@ pub fn checkbox(
       <div class="mdc-form-field">
         <div class="mdc-checkbox" ref={node_ref}>
           <input
+            id={id.clone()}
             type="checkbox"
             class="mdc-checkbox__native-control"
             {checked}
@@ -143,7 +145,7 @@ pub fn checkbox(
           </div>
           <div class="mdc-checkbox__ripple" />
         </div>
-        <label>{label}</label>
+        <label for={id}>{label}</label>
       </div>
     }
 }

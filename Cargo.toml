@@ -20,9 +20,6 @@ version = "0.3.69"
 features = [
     "HtmlAnchorElement",
     "SpeechSynthesis",
-    "Screen",
-    "ScreenOrientation",
-    "OrientationLockType",
     "Window",
     "SpeechSynthesisVoice",
     "SpeechSynthesisUtterance",
